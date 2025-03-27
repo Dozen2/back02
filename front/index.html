@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fetch Users from Backend12</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    .loading {
+      color: blue;
+    }
+    .error {
+      color: red;
+    }
+    .user-list {
+      margin-top: 20px;
+    }
+    .user {
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #ddd;
+      background-color: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+ 
+  <h1>Users from Backend12</h1>
+ 
+  <div id="status" class="loading">Loading users...</div>
+ 
+  <div id="error" class="error" style="display: none;"></div>
+ 
+  <div id="user-list" class="user-list"></div> 
+ <script>
+    // Function to fetch users from the backend container
+    function fetchUsers() {
+      const statusElement = document.getElementById('status');
+      const errorElement = document.getElementById('error');
+      const userListElement = document.getElementById('user-list');
+ 
+      // Reset error and user list
+      errorElement.style.display = 'none';
+      userListElement.innerHTML = '';
+ 
+      // Make a fetch request to the backend container's API
+      fetch('http://lvm66116.sit.kmutt.ac.th:90/api/users')  // Replace with your actual backend API endpoint
+        .then(response => response.json())
+        .then(users => {
+                console.log(users)
+          // Hide the loading status and display the user list
+          statusElement.style.display = 'none';
+ 
+          if (users.length === 0) {
+            userListElement.innerHTML = '<p>No users found.</p>';
+          } else {
+            users.forEach(user => {
+              const userDiv = document.createElement('div');
+              userDiv.classList.add('user');
+              userDiv.innerHTML = `<strong>${user.name}</strong> (ID: ${user.id})`;
+              userListElement.appendChild(userDiv);
+            });
+          }
+        })
+        .catch(error => {
+          // Show error message
+          statusElement.style.display = 'none';
+          errorElement.style.display = 'block';
+          errorElement.textContent = `Error fetching users: ${error.message}`;
+        });
+    }
+ 
+    // Call fetchUsers function when the page loads
+    window.onload = fetchUsers;
+  </script>
+ 
+</body>
+</html>

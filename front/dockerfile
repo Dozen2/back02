@@ -1,0 +1,11 @@
+# ใช้ Nginx เป็น Base Image
+FROM nginx:latest
+
+# คัดลอกไฟล์เว็บไปยังโฟลเดอร์ที่ใช้เสิร์ฟเว็บ
+COPY index.html /usr/share/nginx/html/index.html
+
+# เปิดพอร์ต 80
+EXPOSE 80
+
+# รัน Nginx
+CMD ["nginx", "-g", "daemon off;"]
